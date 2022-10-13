@@ -1,0 +1,5 @@
+Nguyen Van A,11/11/2002,0795653841,22/2A Ly Thuong Kiet
+Nguyen Van B,13/10/1999,0785432126,21/2B Nguyen Thi Minh Khai
+Nguyen Van C,09/09/1986,0893427651,20/2C Vo Thi Sau
+Nguyen Van D,13/10/2000,0756238953,20/3B Nguyen Anh Thu
+Nguyen Van E,12/04/2003,0984567321,20/6C Le Loi
