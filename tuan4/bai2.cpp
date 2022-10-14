@@ -60,15 +60,24 @@ void XoaKhachHang(Tree& root, string sdt) {
 	else {
 		if (root->left == NULL && root->right == NULL)
 			root = NULL;
-		else if (root->left == NULL)
+		else if (root->left == NULL) {
+			Node* t = root;
 			root = root->right;
-		else if (root->right == NULL)
+			delete t;
+		}
+		else if (root->right == NULL) {
+			Node* t = root;
 			root = root->left;
+			delete t;
+		}
 		else {
 			Node* minRoot = minNode(root->right);
-			minRoot->left = root->left;
-			root = minRoot;
-			minRoot = NULL;
+			Node* copy = createNode(minRoot->key);
+			XoaKhachHang(root, minRoot->key.sdt);
+			copy->left = root->left;
+			copy->right = root->right;
+			delete root;
+			root = copy;
 		}
 	}
 }
@@ -147,9 +156,9 @@ void printBTree(Tree root, int h) {
 		cout << "*" << endl << endl;
 		return;
 	}
-	printBTree(root->left, h + 1);
-	printNode(root->key.sdt, h);
 	printBTree(root->right, h + 1);
+	printNode(root->key.sdt, h);
+	printBTree(root->left, h + 1);
 }
 
 
@@ -162,6 +171,7 @@ int main() {
 	}
 	printBTree(root, 0);
 	cout << endl << endl;
-	XoaKhachHang(root, "0795653841");
+	XoaKhachHang(root, "0890232920");
+	cout << "Sau khi xoa" << endl;
 	printBTree(root, 0);
 }
