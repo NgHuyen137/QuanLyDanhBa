@@ -144,7 +144,7 @@ void XuatDS(Tree root) {
 		XuatDS(root->right);
 	}
 }
-void XuatKHCungNgaySinh(Tree root, NgayHeThong ngay_ht, bool& glag) {
+void XuatKHCungNgaySinh(Tree root, NgayHeThong ngay_ht, bool& flag) {
 	if (root != NULL) {
 		if (root->key.ngsinh.ngay == ngay_ht.ngay) {
 			cout << root->key << endl;
