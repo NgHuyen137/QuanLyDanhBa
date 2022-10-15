@@ -129,13 +129,6 @@ void nhapKhachHang(KhachHang& key) {
 	cin >> key.ngsinh.ngay >> key.ngsinh.thang >> key.ngsinh.nam;
 }
 
-//void xuatKhachHang(KhachHang key) {
-//	cout << "Ho ten: " << key.name << endl;
-//	cout << "So dien thoai: " << key.sdt << endl;
-//	cout << "Dia chi: " << key.diachi << endl;
-//	cout << "Ngay sinh: " << key.ngsinh.ngay << "/" << key.ngsinh.thang << "/" << key.ngsinh.nam << endl;
-//}
-
 ostream& operator<<(ostream& COUT, KhachHang key) {
 	COUT << "Ho ten: " << key.name << endl;
 	COUT << "So dien thoai: " << key.sdt << endl;
@@ -151,25 +144,15 @@ void XuatDS(Tree root) {
 		XuatDS(root->right);
 	}
 }
-void XuatKHCungNgaySinh(Tree root, NgayHeThong ngay_ht) {
+void XuatKHCungNgaySinh(Tree root, NgayHeThong ngay_ht, bool& glag) {
 	if (root != NULL) {
 		if (root->key.ngsinh.ngay == ngay_ht.ngay) {
 			cout << root->key << endl;
 		}
-		XuatKHCungNgaySinh(root->left, ngay_ht);
-		XuatKHCungNgaySinh(root->right, ngay_ht);
+		XuatKHCungNgaySinh(root->left, ngay_ht, flag);
+		XuatKHCungNgaySinh(root->right, ngay_ht, flag);
 	}
 }
-
-//void createBTree(Tree& root, int size) {
-//	KhachHang key;
-//	for (int i = 0; i < size; i++) {
-//		cout << "\nKhach hang thu " << i << endl;
-//		nhapKhachHang(key);
-//		Node* node = createNode(key);
-//		insertNode(root, node);
-//	}
-//}
 
 void printNode(string sdt, int h) {
 	for (int i = 0; i < h; i++)
@@ -189,15 +172,6 @@ void printBTree(Tree root, int h) {
 	printBTree(root->left, h + 1);
 }
 
-Node* TimKiemSdt(Tree root, string sdt) {
-	if (root) {
-		if (root->key.sdt == sdt) return root; // tim thay sdt
-		if (sdt < root->key.sdt)
-			return TimKiemSdt(root->left, sdt);
-		return TimKiemSdt(root->right, sdt);
-	}
-	return NULL; // Khong tim thay
-}
 void menu() {
 	Tree root = NULL;
 	int ch;
@@ -263,12 +237,7 @@ void menu() {
 				cout << "\nNhap so dien thoai khach hang can xoa (10 chu so): ";
 				cin >> sdt;
 			} while (sdt.length() != 10);
-			Node* temp = TimKiemSdt(root, sdt);
-			if (temp == NULL) cout << "\nKhong tim thay so dien thoai trong danh sach !";
-			else {
-				XoaKhachHang(root, sdt);
-				cout << "\nDa xoa thanh cong so dien thoai " << sdt;
-			}
+			XoaKhachHang(root, sdt);
 			system("pause");
 		}
 		break;
@@ -277,10 +246,13 @@ void menu() {
 			time_t now = time(0);
 			tm* ltm = localtime(&now);
 			NgayHeThong ngay_ht;
+			bool flag = 0;
 			ngay_ht.ngay = ltm->tm_mday;
 			ngay_ht.thang = ltm->tm_mon;
 			ngay_ht.nam = ltm->tm_year;
-			XuatKHCungNgaySinh(root, ngay_ht);
+			XuatKHCungNgaySinh(root, ngay_ht, flag);
+			if (flag == 0)
+				cout << "Khong tim thay khach hang co ngay sinh hom nay" << endl;
 			system("pause");
 		}
 		break;
