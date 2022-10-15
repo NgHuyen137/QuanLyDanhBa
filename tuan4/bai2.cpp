@@ -34,9 +34,9 @@ Node* createNode(KhachHang key) {
 void insertNode(Tree& root, Node* node) {
 	if (root == NULL)
 		root = node;
-	else if (node->key.sdt> root->key.sdt)
+	else if (node->key.sdt > root->key.sdt)
 		insertNode(root->right, node);
-	else if (node->key.sdt< root->key.sdt)
+	else if (node->key.sdt < root->key.sdt)
 		insertNode(root->left, node);
 	else return;
 }
@@ -46,29 +46,29 @@ void insertNode(Tree& root, Node* node) {
 void minNode(Node* rightChild, Node*& minnode) {//rightChild: cay con phai
 	if (rightChild->left == NULL)
 		minnode = rightChild;
-	else 
+	else
 		minNode(rightChild->left, minnode);
 }
 /*Ham xoa 1 khach hang co sdt cho truoc*/
 void XoaKhachHang(Tree& root, string sdt) {
 	if (root == NULL) 
-		cout << "Khong tim thay so dien thoai can xoa" << endl; 
+		cout << "Khong tim thay so dien thoai can xoa" << endl;
 	else if (root->key.sdt > sdt)
 		XoaKhachHang(root->left, sdt);
 	else if (root->key.sdt < sdt)
 		XoaKhachHang(root->right, sdt);
 	else {
 		if (root->left == NULL && root->right == NULL)
-			delete[] root;
+			root = NULL;
 		else if (root->left == NULL) {
 			Node* delnode = root;
 			root = root->right;
-			delete[] delnode;
+			delete delnode;
 		}
 		else if (root->right == NULL) {
 			Node* delnode = root;
 			root = root->left;
-			delete[] delnode;
+			delete delnode;
 		}
 		else {
 			Node* minnode = NULL;
@@ -79,7 +79,7 @@ void XoaKhachHang(Tree& root, string sdt) {
 			copy->left = root->left;
 			copy->right = root->right;
 
-			delete[] root;
+			delete root;
 			root = copy;
 		}
 	}
