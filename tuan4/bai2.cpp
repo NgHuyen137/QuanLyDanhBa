@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #pragma warning(disable : 4996)
+
 using namespace std;
 struct NgaySinh {
 	int ngay, thang, nam;
@@ -39,6 +40,12 @@ void insertNode(Tree& root, Node* node) {
 		insertNode(root->left, node);
 	else return;
 }
+
+//int compare(string sdt1, string sdt2) {
+//	if (sdt1.compare(sdt2) == 0) return -1; // sdt1=sdt2
+//	if (sdt1.compare(sdt2) > 0) return 1; // sdt1>sdt2
+//	else return 0; // sdt1<sdt2
+//}
 
 /*Cac ham xoa*/
 /*Ham tim node nho nhat ke tu node root*/
@@ -109,7 +116,7 @@ void DocDanhBa(ifstream& filein, Tree& root) {
 
 /*Cac ham nhap, xuat khach hang*/
 void nhapKhachHang(KhachHang& key) {
-	cout << "Nhap ho ten: ";
+	cout << "\nNhap ho ten: ";
 	cin.ignore();
 	getline(cin, key.name);
 
@@ -156,15 +163,16 @@ void XuatKHCungNgaySinh(Tree root, NgayHeThong ngay_ht) {
 	}
 }
 
-void createBTree(Tree& root, int size) {
-	KhachHang key;
-	for (int i = 0; i < size; i++) {
-		cout << "\nKhach hang thu " << i << endl;
-		nhapKhachHang(key);
-		Node* node = createNode(key);
-		insertNode(root, node);
-	}
-}
+//void createBTree(Tree& root, int size) {
+//	KhachHang key;
+//	for (int i = 0; i < size; i++) {
+//		cout << "\nKhach hang thu " << i << endl;
+//		nhapKhachHang(key);
+//		Node* node = createNode(key);
+//		insertNode(root, node);
+//	}
+//}
+
 void printNode(string sdt, int h) {
 	for (int i = 0; i < h; i++)
 		cout << "          ";
@@ -183,6 +191,15 @@ void printBTree(Tree root, int h) {
 	printBTree(root->left, h + 1);
 }
 
+Node* TimKiemSdt(Tree root, string sdt) {
+	if (root) {
+		if (root->key.sdt == sdt) return root; // tim thay sdt
+		if (sdt < root->key.sdt)
+			return TimKiemSdt(root->left, sdt);
+		return TimKiemSdt(root->right, sdt);
+	}
+	return NULL; // Khong tim thay
+}
 void menu() {
 	Tree root = NULL;
 	int ch;
@@ -194,10 +211,9 @@ void menu() {
 		cout << "1. Doc danh sach khach hang tu file" << endl;
 		cout << "2. Xuat danh sach khach hang" << endl;
 		cout << "3. Xuat cay BST luu so dien thoai khach hang" << endl;
-		cout << "4. Xoa khach hang voi so dien thoai bat ky" << endl;
-		cout << "5. Tim khach hang co cung ngay sinh nhat trong ngay hien tai" << endl;
-		cout << "6. Tim khach hang co cung ngay sinh nhat" << endl;
-		cout << "7. Them khach hang vao danh sach" << endl;
+		cout << "4. Them khach hang vao danh sach" << endl;
+		cout << "5. Xoa khach hang voi so dien thoai bat ky" << endl;
+		cout << "6. Tim khach hang co cung ngay sinh nhat trong ngay hien tai" << endl;
 		cout << "============================================================" << endl;
 		cout << "\nNhap lua chon: ";
 		cin >> ch;
@@ -233,14 +249,32 @@ void menu() {
 		break;
 		case 4:
 		{
-			string sdt;
-			cout << "\nNhap so dien thoai khach hang can xoa: ";
-			cin >> sdt;
-			XoaKhachHang(root, sdt);
+			KhachHang key;
+			cout << "\nNhap thong tin khach hang can them: ";
+			nhapKhachHang(key);
+			Node* node = createNode(key);
+			insertNode(root, node);
+			cout << "\nDa them khach hang vao danh sach. Nhan 2 de kiem tra !";
 			system("pause");
 		}
 		break;
 		case 5:
+		{
+			string sdt;
+			do {
+				cout << "\nNhap so dien thoai khach hang can xoa (10 chu so): ";
+				cin >> sdt;
+			} while (sdt.length() != 10);
+			Node* temp = TimKiemSdt(root, sdt);
+			if (temp == NULL) cout << "\nKhong tim thay so dien thoai trong danh sach !";
+			else {
+				XoaKhachHang(root, sdt);
+				cout << "\nDa xoa thanh cong so dien thoai " << sdt;
+			}
+			system("pause");
+		}
+		break;
+		case 6:
 		{
 			time_t now = time(0);
 			tm* ltm = localtime(&now);
@@ -252,21 +286,10 @@ void menu() {
 			system("pause");
 		}
 		break;
-		case 7:
-		{
-			KhachHang key;
-			cout << "\nNhap thong tin khach hang can them: ";
-			nhapKhachHang(key);
-			Node* node = createNode(key);
-			insertNode(root, node);
-			cout << "\nDa them khach hang vao danh sach. Nhan 2 de kiem tra !";
-			system("pause");
-		}
-		break;
 		}
 	} while (!quit);
 }
 
-int main(){
+int main() {
 	menu();
 }
